@@ -22,7 +22,7 @@ docker pull rbillon59/wiremock-loadtest
 ##### Start a Wiremock container
 
 ```sh
-docker run --rm -p 8080:8080 -v "${PWD}/samples/stubs/mappings":/home/wiremock rbillon59/wiremock-loadtest
+docker run --rm -p 8080:8080 -v "${PWD}/samples/stubs":/home/wiremock rbillon59/wiremock-loadtest
 ```
 
 ##### Running multiple instances of Wiremock behind a reverse proxy
