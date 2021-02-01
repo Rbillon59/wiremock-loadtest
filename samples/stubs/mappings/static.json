@@ -1,0 +1,22 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/static"
+  },
+  "response": {
+    "status": 200,
+    "fixedDelayMilliseconds": 1000,
+    "jsonBody": {
+      "data": [{
+        "type": "product",
+        "id": "1",
+        "attributes": {
+          "productName": "Raspberry PI",
+          "productDescription": "Best product ever",
+          "price": 42,
+          "stock": 500
+        }
+      }]
+    }
+  }
+}

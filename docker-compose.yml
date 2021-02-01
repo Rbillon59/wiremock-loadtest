@@ -1,0 +1,17 @@
+version: "2"
+services:
+  wiremock:
+    image: rbillon59/wiremock-loadtest:latest
+    volumes:
+      - ./samples/stubs:/home/wiremock
+    ports: 
+      - 8080
+  
+  nginx-load-balancer:
+    image: nginx:alpine
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - wiremock
+    ports:
+      - "8080:8080"

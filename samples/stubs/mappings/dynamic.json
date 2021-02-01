@@ -1,0 +1,23 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/dynamic/.*"
+  },
+  "response": {
+    "status": 200,
+    "fixedDelayMilliseconds": 1000,
+    "transformers": ["response-template"],
+    "jsonBody": {
+      "data": [{
+        "type": "product",
+        "id": "1",
+        "attributes": {
+          "productName": "{{request.pathSegments.[1]}}",
+          "productDescription": "Best product ever",
+          "price": 42,
+          "stock": 500
+        }
+      }]
+    }
+  }
+}
