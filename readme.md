@@ -38,6 +38,6 @@ Doing this you will spawn 5 instances of the mock behind a nginx reverse proxy w
 
 Two examples mappings are available in the samples/stubs/mappings folder. /static is a pre-defined json body while /dynamic take the path to create the json response.
 
-> Access [http://localhost:8080/static](http://localhost:8080/static) to show static json message
-> Access [http://localhost:8080/static](http://localhost:8080/dynamic/whatever) to show dynamic json message
+> Access [http://localhost:8080/static](http://localhost:8080/static) to show static json message  
+> Access [http://localhost:8080/dynamic/whatever](http://localhost:8080/dynamic/whatever) to show dynamic json message
 
