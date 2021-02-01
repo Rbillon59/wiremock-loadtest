@@ -6,8 +6,8 @@
 
 By default, Wiremock is not configured to handle an heavy load. Here is what is changed in the configuration :
 
-- --no-request-journal --> By default, Wiremock keep all requests logs in the Java heap, so a memory exhaust happen, fast. We disabled it
-- --async-response-enabled=true --> By default, request responses are synchronous, here async
+- `--no-request-journal` --> By default, Wiremock keep all requests logs in the Java heap, so a memory exhaust happen, fast. We disabled it
+- `--async-response-enabled=true` --> By default, request responses are synchronous, here async
 
 ## How to use this image
 
