@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wiremock
+  labels:
+    type: wiremock
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      type: wiremock
+  template:
+    metadata:
+      labels:
+        type: wiremock
+    spec:
+      containers:
+      - name: wiremock
+        image: rbillon59/wiremock-loadtest:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: stubs
+          mountPath: /home/wiremock
+      volumes:
+        - name: stubs
+          hostPath:
+            path: <absolute_path_to_the_repo>/samples/stubs
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wiremock-svc
+  labels:
+    type: wiremock
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    type: wiremock
+  type: LoadBalancer
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: hpa-wiremock
+spec:
+  maxReplicas: 10
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: extensions/v1beta1
+    kind: Deployment
+    name: wiremock
+  targetCPUUtilizationPercentage: 30

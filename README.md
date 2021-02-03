@@ -31,8 +31,26 @@ docker run --rm -p 8080:8080 -v "${PWD}/samples/stubs":/home/wiremock rbillon59/
 docker-compose up --scale wiremock=5 -d
 ```
  
-Doing this you will spawn 5 instances of the mock behind a nginx reverse proxy which will load balance across the instances
+Doing this you will spawn 5 instances of the mock behind a nginx reverse proxy which will load balance across the instances. It's useful to quickly launch multiple instance across a single host.
 
+##### Running inside a kubernetes cluster
+
+You need to update the volume mount path with the absolute path to the repository. It's necessary to put the mappings inside the pods.
+
+```yaml
+volumes:
+        - name: stubs
+          hostPath:
+            path: <absolute_path_to_the_repo>/samples/stubs
+```
+
+```sh
+kubectl apply -f kubernetes.yaml
+```
+
+The kubernetes.yaml file contains a definition of the wiremock deployment and a load balancer service to expose wiremock (no need for a specifif nginx). You can deploy this inside your kubernetes cluster to mock direcly beside your application.  
+
+The horizontal auto scaler will scale up the replicas if the CPU threshold is reached
 
 #### Samples
 
