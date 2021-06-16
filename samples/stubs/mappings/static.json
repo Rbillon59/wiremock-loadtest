@@ -5,7 +5,7 @@
   },
   "response": {
     "status": 200,
-    "fixedDelayMilliseconds": 1000,
+    "fixedDelayMilliseconds": 50,
     "jsonBody": {
       "data": [{
         "type": "product",

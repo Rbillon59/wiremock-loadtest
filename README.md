@@ -35,14 +35,7 @@ Doing this you will spawn 5 instances of the mock behind a nginx reverse proxy w
 
 ##### Running inside a kubernetes cluster
 
-You need to update the volume mount path with the absolute path to the repository. It's necessary to put the mappings inside the pods.
-
-```yaml
-volumes:
-        - name: stubs
-          hostPath:
-            path: <absolute_path_to_the_repo>/samples/stubs
-```
+Update the Kubernetes configmap to add your stubs then :
 
 ```sh
 kubectl apply -f kubernetes.yaml

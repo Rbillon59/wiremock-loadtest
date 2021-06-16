@@ -1,17 +1,18 @@
-FROM openjdk:8-jre-alpine
+FROM openjdk:15-alpine
 
 ENV WIREMOCK_VERSION 2.27.2
 
-RUN mkdir -p /var/wiremock/lib/ \
-  && wget https://repo1.maven.org/maven2/com/github/tomakehurst/wiremock-jre8-standalone/$WIREMOCK_VERSION/wiremock-jre8-standalone-$WIREMOCK_VERSION.jar \
-  -O /var/wiremock/lib/wiremock-jre8-standalone.jar
+RUN mkdir -p /var/wiremock/lib/ && \
+  wget https://repo1.maven.org/maven2/com/github/tomakehurst/wiremock-standalone/${WIREMOCK_VERSION}/wiremock-standalone-${WIREMOCK_VERSION}.jar \
+  -O /var/wiremock/lib/wiremock-jre8-standalone.jar && \
+  wget https://search.maven.org/remotecontent?filepath=org/jolokia/jolokia-jvm/1.6.2/jolokia-jvm-1.6.2-agent.jar -O /var/wiremock/lib/jolokia-java-agent.jar  && \
+  addgroup wiremock && \
+  adduser --disabled-password --gecos '' --home /home/wiremock --ingroup wiremock wiremock && \
+  chown --recursive wiremock:wiremock /home/wiremock
+
 
 WORKDIR /home/wiremock
+USER wiremock
+COPY entrypoint.sh /home/wiremock/entrypoint.sh
 
-CMD java -Dcom.sun.management.jmxremote=true \
-  -Dcom.sun.management.jmxremote.rmi.port=9010 \
-  -Dcom.sun.management.jmxremote.port=9010 \
-  -Dcom.sun.management.jmxremote.ssl=false \
-  -Dcom.sun.management.jmxremote.authenticate=false \
-  -Dcom.sun.management.jmxremote.local.only=false \
-  -cp /var/wiremock/lib/*:/var/wiremock/extensions/* com.github.tomakehurst.wiremock.standalone.WireMockServerRunner --no-request-journal --async-response-enabled=true --local-response-templating
+ENTRYPOINT [ "./entrypoint.sh" ]
