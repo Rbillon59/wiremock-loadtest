@@ -1,0 +1,50 @@
+name: Push wiremock releases
+on: push
+jobs:
+  checkout:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+  generate-matrix:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Set matrix for build
+      id: set-matrix
+      run: |
+        RELEASES=$(curl -d '{"per_page":10}' -s -H "Accept: application/vnd.github.v3+json" -X GET "https://api.github.com/repos/wiremock/wiremock/tags" | jq --compact-output '[ .[] | .name ] ')
+        echo "::set-output name=matrix::$RELEASES"
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      
+  build-n-push:
+    needs: generate-matrix
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: 
+        releases: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
+    steps:
+    - name: debug
+      run: |
+        echo "${{ matrix.releases }}"    
+    # - name: Build docker images with tags
+    #   uses: actions/checkout@v2
+      
+    # - name: Set up QEMU
+    #   uses: docker/setup-qemu-action@v1
+      
+    # - name: Set up Docker Buildx
+    #   uses: docker/setup-buildx-action@v1
+
+    # - name: Login to DockerHub
+    #   uses: docker/login-action@v1
+    #   with:
+    #     username: ${{ secrets.DOCKERHUB_USERNAME }}
+    #     password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    # - name: Build and push
+    #   uses: docker/build-push-action@v2
+    #   with:
+    #     context: .
+    #     push: true
+    #     tags: rbillon59/wiremock-loadtest:${{ matrix.tags }}
