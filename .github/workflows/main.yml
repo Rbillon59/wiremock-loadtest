@@ -2,6 +2,8 @@ name: Push wiremock releases
 on:
   schedule:
     - cron:  '30 12 * * *'
+  push:
+  workflow_dispatch:
 jobs:
   checkout:
     runs-on: ubuntu-latest

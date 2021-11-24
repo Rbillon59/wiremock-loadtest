@@ -40,7 +40,7 @@ docker run -d --rm -p 8080:8080 -v "${PWD}/samples/stubs":/home/wiremock/mapping
 ##### Running multiple instances of Wiremock behind a reverse proxy
 
 ```sh
-docker-compose up --scale wiremock=5 -d
+cd docker-compose && docker-compose up --scale wiremock=5 -d
 ```
  
 Doing this you will spawn 5 instances of the mock behind a nginx reverse proxy which will load balance across the instances. It's useful to quickly launch multiple instance across a single host.
