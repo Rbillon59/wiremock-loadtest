@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: wiremock
-        image: rbillon59/wiremock-loadtest:latest
+        image: rbillon59/wiremock-loadtest:2.30.1
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
@@ -62,10 +62,10 @@ kind: HorizontalPodAutoscaler
 metadata:
   name: hpa-wiremock
 spec:
-  maxReplicas: 10
+  maxReplicas: 5
   minReplicas: 1
   scaleTargetRef:
-    apiVersion: extensions/v1beta1
+    apiVersion: apps/v1
     kind: Deployment
     name: wiremock
   targetCPUUtilizationPercentage: 30

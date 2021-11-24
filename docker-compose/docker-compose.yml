@@ -1,9 +1,9 @@
 version: "2"
 services:
   wiremock:
-    image: rbillon59/wiremock-loadtest:latest
+    image: rbillon59/wiremock-loadtest:2.30.1
     volumes:
-      - ./samples/stubs:/home/wiremock
+      - ../samples/stubs:/home/wiremock/mappings:ro
     ports: 
       - 8080
   
@@ -14,4 +14,4 @@ services:
     depends_on:
       - wiremock
     ports:
-      - "8080:8080"
+      - "80:8080"

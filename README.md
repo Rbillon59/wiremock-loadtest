@@ -23,7 +23,7 @@ Also, the Java agent Jolokia have been installed beside to be able to monitor th
 
 ##### Pull latest image
 
-The image tags are the reflect of the official repository git tags. For example
+The image tags are the reflect of the official repository git tags (updated every days at 12h30). For example
 
 ```sh
 docker pull rbillon59/wiremock-loadtest:2.30.1
@@ -34,13 +34,13 @@ docker pull rbillon59/wiremock-loadtest:2.30.1
 Default port is 8080 but you can change it with the ${PORT} environement variable
 
 ```sh
-docker run -d --rm -p 8080:8080 -v "${PWD}/samples/stubs":/home/wiremock rbillon59/wiremock-loadtest:2.30.1
+docker run -d --rm -p 8080:8080 -v "${PWD}/samples/stubs":/home/wiremock/mappings rbillon59/wiremock-loadtest:2.30.1
 ```
 
 ##### Running multiple instances of Wiremock behind a reverse proxy
 
 ```sh
-docker-compose up --scale wiremock=5 -d
+cd docker-compose && docker-compose up --scale wiremock=5 -d
 ```
  
 Doing this you will spawn 5 instances of the mock behind a nginx reverse proxy which will load balance across the instances. It's useful to quickly launch multiple instance across a single host.
