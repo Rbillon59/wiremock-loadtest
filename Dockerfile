@@ -1,6 +1,6 @@
 FROM openjdk:15-alpine
 
-ENV WIREMOCK_VERSION 2.27.2
+ARG WIREMOCK_VERSION 2.27.2
 
 RUN mkdir -p /var/wiremock/lib/ && \
   wget https://repo1.maven.org/maven2/com/github/tomakehurst/wiremock-standalone/${WIREMOCK_VERSION}/wiremock-standalone-${WIREMOCK_VERSION}.jar \
