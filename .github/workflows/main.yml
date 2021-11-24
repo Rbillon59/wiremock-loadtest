@@ -48,5 +48,4 @@ jobs:
         context: .
         push: true
         tags: rbillon59/wiremock-loadtest:${{ matrix.releases }}
-        build-args:
-         - ${{ matrix.releases }}
+        build-args: WIREMOCK_VERSION=${{ matrix.releases }}
