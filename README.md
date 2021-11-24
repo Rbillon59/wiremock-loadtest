@@ -9,20 +9,32 @@ By default, Wiremock is not configured to handle an heavy load. Here is what is 
 - `--no-request-journal` --> By default, Wiremock keep all requests logs in the Java heap, so a memory exhaust happen, fast. We disabled it
 - `--async-response-enabled=true` --> By default, request responses are synchronous, here async
 
+You can also use the same command line arguments as the standalone jar. Like this
+
+```sh
+docker run -d --rm -p 8080:8080 -v "${PWD}/samples/stubs":/home/wiremock rbillon59/wiremock-loadtest --no-request-journal --async-response-enabled=true
+```
+
+Also, the Java agent Jolokia have been installed beside to be able to monitor the JVM behaviour during your load tests
+
 ## How to use this image
 
 #### Getting started
 
 ##### Pull latest image
 
+The image tags are the reflect of the official repository git tags. For example
+
 ```sh
-docker pull rbillon59/wiremock-loadtest
+docker pull rbillon59/wiremock-loadtest:2.30.1
 ```
 
 ##### Start a Wiremock container
 
+Default port is 8080 but you can change it with the ${PORT} environement variable
+
 ```sh
-docker run --rm -p 8080:8080 -v "${PWD}/samples/stubs":/home/wiremock rbillon59/wiremock-loadtest
+docker run -d --rm -p 8080:8080 -v "${PWD}/samples/stubs":/home/wiremock rbillon59/wiremock-loadtest:2.30.1
 ```
 
 ##### Running multiple instances of Wiremock behind a reverse proxy
@@ -38,12 +50,13 @@ Doing this you will spawn 5 instances of the mock behind a nginx reverse proxy w
 Update the Kubernetes configmap to add your stubs then :
 
 ```sh
-kubectl apply -f kubernetes.yaml
+kubectl apply -R -f k8s
 ```
 
-The kubernetes.yaml file contains a definition of the wiremock deployment and a load balancer service to expose wiremock (no need for a specifif nginx). You can deploy this inside your kubernetes cluster to mock direcly beside your application.  
+The kubernetes.yaml file contains a definition of the wiremock deployment and a load balancer service to expose wiremock (no need for a specific nginx). You can deploy this inside your kubernetes cluster to mock direcly beside your application.  
 
 The horizontal auto scaler will scale up the replicas if the CPU threshold is reached
+--> The metric server is mandatory to expose the CPU metric to the Kubernetes API for the HPA to work
 
 #### Samples
 

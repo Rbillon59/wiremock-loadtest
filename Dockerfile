@@ -1,9 +1,9 @@
 FROM openjdk:15-alpine
 
-ENV WIREMOCK_VERSION 2.27.2
+ARG WIREMOCK_VERSION 2.27.2
 
 RUN mkdir -p /var/wiremock/lib/ && \
-  wget https://repo1.maven.org/maven2/com/github/tomakehurst/wiremock-standalone/${WIREMOCK_VERSION}/wiremock-standalone-${WIREMOCK_VERSION}.jar \
+  wget https://search.maven.org/remotecontent?filepath=com/github/tomakehurst/wiremock-jre8/${WIREMOCK_VERSION}/wiremock-jre8-${WIREMOCK_VERSION}.jar \
   -O /var/wiremock/lib/wiremock-jre8-standalone.jar && \
   wget https://search.maven.org/remotecontent?filepath=org/jolokia/jolokia-jvm/1.6.2/jolokia-jvm-1.6.2-agent.jar -O /var/wiremock/lib/jolokia-java-agent.jar  && \
   addgroup wiremock && \
