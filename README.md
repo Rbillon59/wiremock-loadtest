@@ -12,7 +12,7 @@ By default, Wiremock is not configured to handle an heavy load. Here is what is 
 You can also use the same command line arguments as the standalone jar. Like this
 
 ```sh
-docker run -d --rm -p 8080:8080 -v "${PWD}/samples/stubs":/home/wiremock rbillon59/wiremock-loadtest --no-request-journal --async-response-enabled=true
+docker run -d --rm -p 8080:8080 -v "${PWD}/mappings":/home/wiremock/mappings rbillon59/wiremock-loadtest:2.30.1 --no-request-journal --async-response-enabled=true
 ```
 
 Also, the Java agent Jolokia have been installed beside to be able to monitor the JVM behaviour during your load tests
@@ -31,10 +31,10 @@ docker pull rbillon59/wiremock-loadtest:2.30.1
 
 ##### Start a Wiremock container
 
-Default port is 8080 but you can change it with the ${PORT} environement variable
+Default port is 8080 but you can change it with the ${PORT} environement variable (for the internal container service port)
 
 ```sh
-docker run -d --rm -p 8080:8080 -v "${PWD}/samples/stubs":/home/wiremock/mappings rbillon59/wiremock-loadtest:2.30.1
+docker run -d --rm -p 8080:8080 -v "${PWD}/mappings":/home/wiremock/mappings rbillon59/wiremock-loadtest:2.30.1
 ```
 
 ##### Running multiple instances of Wiremock behind a reverse proxy
@@ -50,7 +50,7 @@ Doing this you will spawn 5 instances of the mock behind a nginx reverse proxy w
 Update the Kubernetes configmap to add your stubs then :
 
 ```sh
-kubectl apply -R -f k8s
+kubectl apply -R -f k8s/
 ```
 
 The kubernetes.yaml file contains a definition of the wiremock deployment and a load balancer service to expose wiremock (no need for a specific nginx). You can deploy this inside your kubernetes cluster to mock direcly beside your application.  
