@@ -11,8 +11,8 @@ RUN mkdir -p /var/wiremock/lib/ && \
   chown --recursive wiremock:wiremock /home/wiremock
 
 
-WORKDIR /home/wiremock
+WORKDIR /tmp
 USER wiremock
-COPY entrypoint.sh /home/wiremock/entrypoint.sh
+COPY entrypoint.sh /tmp/entrypoint.sh
 
 ENTRYPOINT [ "./entrypoint.sh" ]

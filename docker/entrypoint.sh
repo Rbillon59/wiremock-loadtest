@@ -10,4 +10,4 @@ else
   wiremock_args="$@"
 fi
 
-java -javaagent:/var/wiremock/lib/jolokia-java-agent.jar=port=8778,host=0.0.0.0 -cp /var/wiremock/lib/*:/var/wiremock/extensions/* com.github.tomakehurst.wiremock.standalone.WireMockServerRunner ${wiremock_args}
+cd /home/wiremock && java -javaagent:/var/wiremock/lib/jolokia-java-agent.jar=port=8778,host=0.0.0.0 -cp /var/wiremock/lib/*:/var/wiremock/extensions/* com.github.tomakehurst.wiremock.standalone.WireMockServerRunner ${wiremock_args}
