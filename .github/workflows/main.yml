@@ -72,7 +72,7 @@ jobs:
     steps:
     - name: debug
       run: |
-        echo "building and pushing ${{ needs.set-latest-release.outputs.release }}"    
+        echo "building and pushing ${{ needs.get-latest-release.outputs.release }}"    
     - name: Build docker images with tags
       uses: actions/checkout@v2
       
@@ -94,4 +94,4 @@ jobs:
         context: ./docker
         push: true
         tags: rbillon59/wiremock-loadtest:latest
-        build-args: WIREMOCK_VERSION=${{ needs.set-latest-release.outputs.release }}
+        build-args: WIREMOCK_VERSION=${{ needs.get-latest-release.outputs.release }}
