@@ -12,7 +12,7 @@ By default, Wiremock is not configured to handle an heavy load. Here is what is 
 You can also use the same command line arguments as the standalone jar. Like this
 
 ```sh
-docker run -d --rm -p 8080:8080 -v "${PWD}/mappings":/home/wiremock/mappings rbillon59/wiremock-loadtest:2.30.1 --no-request-journal --async-response-enabled=true
+docker run -d --rm -p 8080:8080 -v "${PWD}/mappings":/home/wiremock/mappings rbillon59/wiremock-loadtest:latest --no-request-journal --async-response-enabled=true
 ```
 
 Also, the Java agent Jolokia have been installed beside to be able to monitor the JVM behaviour during your load tests
@@ -26,7 +26,7 @@ Also, the Java agent Jolokia have been installed beside to be able to monitor th
 The image tags are the reflect of the official repository git tags (updated every days at 12h30). For example
 
 ```sh
-docker pull rbillon59/wiremock-loadtest:2.30.1
+docker pull rbillon59/wiremock-loadtest:latest
 ```
 
 ##### Start a Wiremock container
@@ -34,7 +34,7 @@ docker pull rbillon59/wiremock-loadtest:2.30.1
 Default port is 8080 but you can change it with the ${PORT} environement variable (for the internal container service port)
 
 ```sh
-docker run -d --rm -p 8080:8080 -v "${PWD}/mappings":/home/wiremock/mappings rbillon59/wiremock-loadtest:2.30.1
+docker run -d --rm -p 8080:8080 -v "${PWD}/mappings":/home/wiremock/mappings rbillon59/wiremock-loadtest:latest
 ```
 
 ##### Running multiple instances of Wiremock behind a reverse proxy
@@ -47,10 +47,21 @@ Doing this you will spawn 5 instances of the mock behind a nginx reverse proxy w
 
 ##### Running inside a kubernetes cluster
 
-Update the Kubernetes configmap to add your stubs then :
+Update your wiremock mappings in the `mappings` folder, then create the configmap resource
 
 ```sh
+# Create the kubernetes configmaps from the mappings folder
+kubectl create configmap wiremock-mapping --from-file=mappings
 kubectl apply -R -f k8s/
+```
+
+To update the configmap of a already running deployment, run :
+
+```sh
+# Replace the kubernetes configmaps
+kubectl create configmap wiremock-mapping --from-file=mappings -o yaml --dry-run=client | kubectl replace -f -
+# Restart the pods so they get the right version of the configMap
+kubectl delete pods -l type=wiremock
 ```
 
 The kubernetes.yaml file contains a definition of the wiremock deployment and a load balancer service to expose wiremock (no need for a specific nginx). You can deploy this inside your kubernetes cluster to mock direcly beside your application.  

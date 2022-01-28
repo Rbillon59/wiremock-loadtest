@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: wiremock
-        image: rbillon59/wiremock-loadtest:2.30.1
+        image: rbillon59/wiremock-loadtest:latest
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
@@ -31,13 +31,14 @@ spec:
             memory: "1024Mi"
             cpu: "1024m"
         livenessProbe:
-          exec:
-            command:
-            - cat
-            - /bin/cat
-        readinessProbe:
           tcpSocket:
             port: 8080
+        readinessProbe:
+          httpGet:
+            path: /__admin
+            port: 8080
+          initialDelaySeconds: 3
+          periodSeconds: 3
       volumes:
         - name: wiremock-mapping
           configMap:
@@ -69,56 +70,3 @@ spec:
     kind: Deployment
     name: wiremock
   targetCPUUtilizationPercentage: 30
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: wiremock-mapping
-data:
-  static.json: |-
-    {
-    "request": {
-      "method": "GET",
-      "url": "/static"
-      },
-        "response": {
-          "status": 200,
-          "fixedDelayMilliseconds": 50,
-          "jsonBody": {
-            "data": [{
-              "type": "product",
-              "id": "1",
-              "attributes": {
-                "productName": "Raspberry PI",
-                "productDescription": "Best product ever",
-                "price": 42,
-                "stock": 500
-              }
-            }]
-          }
-        }
-      }
-  dynamic.json: |-
-    {
-      "request": {
-        "method": "GET",
-        "urlPathPattern": "/dynamic/.*"
-      },
-      "response": {
-        "status": 200,
-        "fixedDelayMilliseconds": 1000,
-        "transformers": ["response-template"],
-        "jsonBody": {
-          "data": [{
-            "type": "product",
-            "id": "1",
-            "attributes": {
-              "productName": "{{request.pathSegments.[1]}}",
-              "productDescription": "Best product ever",
-              "price": 42,
-              "stock": 500
-            }
-          }]
-        }
-      }
-    }
