@@ -76,3 +76,8 @@ Two examples mappings are available in the samples/stubs/mappings folder. /stati
 > Access [http://localhost:8080/static](http://localhost:8080/static) to show static json message  
 > Access [http://localhost:8080/dynamic/whatever](http://localhost:8080/dynamic/whatever) to show dynamic json message
 
+
+
+### Infrastructure model
+
+![Infrastructure model](.infragenie/infrastructure_model.png)
