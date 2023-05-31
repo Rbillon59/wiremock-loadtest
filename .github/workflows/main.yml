@@ -16,7 +16,7 @@ jobs:
     - name: Set matrix for build
       id: set-matrix
       run: |
-        RELEASES=$(curl -s -H "Accept: application/vnd.github.v3+json" -X GET "https://api.github.com/repos/wiremock/wiremock/tags?per_page=10" | jq --compact-output '[ .[] | select(.name|match("[0-9].[0-9]+.[0-9]$")) | .name ]')
+        RELEASES=$(curl -s -H "Accept: application/vnd.github.v3+json" -X GET "https://api.github.com/repos/wiremock/wiremock/tags?per_page=20" | jq --compact-output '[ .[] | select(.name|match("[0-9].[0-9]+.[0-9]$")) | .name ]')
         echo "::set-output name=matrix::$RELEASES"
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
@@ -27,7 +27,7 @@ jobs:
     - name: Set latest release for build
       id: set-latest-release
       run: |
-        RELEASES=$(curl -s -H "Accept: application/vnd.github.v3+json" -X GET "https://api.github.com/repos/wiremock/wiremock/tags?per_page=10" | jq --compact-output '[ .[] | select(.name|match("[0-9].[0-9]+.[0-9]$")) | .name ]')
+        RELEASES=$(curl -s -H "Accept: application/vnd.github.v3+json" -X GET "https://api.github.com/repos/wiremock/wiremock/tags?per_page=20" | jq --compact-output '[ .[] | select(.name|match("[0-9].[0-9]+.[0-9]$")) | .name ]')
         RELEASE=$(echo ${RELEASES} | jq -r --slurp '.[0][0]')
         echo "::set-output name=release::$RELEASE"
     outputs:
@@ -65,6 +65,7 @@ jobs:
         push: true
         tags: rbillon59/wiremock-loadtest:${{ matrix.releases }}
         build-args: WIREMOCK_VERSION=${{ matrix.releases }}
+        platforms: linux/amd64,linux/arm64
 
   build-n-push-latest:
     needs: get-latest-release
@@ -95,3 +96,4 @@ jobs:
         push: true
         tags: rbillon59/wiremock-loadtest:latest
         build-args: WIREMOCK_VERSION=${{ needs.get-latest-release.outputs.release }}
+        platforms: linux/amd64,linux/arm64
