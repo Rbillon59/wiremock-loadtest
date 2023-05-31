@@ -1,6 +1,10 @@
-FROM openjdk:15-alpine
+FROM openjdk:21-slim
 
 ARG WIREMOCK_VERSION 2.27.2
+
+RUN apt update && \
+  apt install -y wget && \
+  rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /var/wiremock/lib/ && \
   wget https://search.maven.org/remotecontent?filepath=com/github/tomakehurst/wiremock-jre8-standalone/${WIREMOCK_VERSION}/wiremock-jre8-standalone-${WIREMOCK_VERSION}.jar \
