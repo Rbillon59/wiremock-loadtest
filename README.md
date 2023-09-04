@@ -12,7 +12,7 @@ By default, Wiremock is not configured to handle an heavy load. Here is what is 
 You can also use the same command line arguments as the standalone jar. Like this
 
 ```sh
-docker run -d --rm -p 8080:8080 -v "${PWD}/mappings":/home/wiremock/mappings rbillon59/wiremock-loadtest:latest --no-request-journal --async-response-enabled=true
+docker run -d --rm -p 8080:8080 -v "${PWD}/mappings":/home/wiremock/mappings rbillon59/wiremock-loadtest:latest
 ```
 
 Also, the Java agent Jolokia have been installed beside to be able to monitor the JVM behaviour during your load tests
