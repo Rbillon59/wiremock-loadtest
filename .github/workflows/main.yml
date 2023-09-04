@@ -1,7 +1,7 @@
 name: Push wiremock releases
 on:
   schedule:
-    - cron:  '30 12 * * *'
+    - cron:  '0 0 15 * *'
   push:
   workflow_dispatch:
 jobs:
@@ -16,7 +16,7 @@ jobs:
     - name: Set matrix for build
       id: set-matrix
       run: |
-        RELEASES=$(curl -s -H "Accept: application/vnd.github.v3+json" -X GET "https://api.github.com/repos/wiremock/wiremock/tags?per_page=20" | jq --compact-output '[ .[] | select(.name|match("[0-9].[0-9]+.[0-9]$")) | .name ]')
+        RELEASES=$(curl -s -H "Accept: application/vnd.github.v3+json" -X GET "https://api.github.com/repos/wiremock/wiremock-docker/tags?per_page=20" | jq --compact-output '[ .[] | select(.name|match("[0-9].[0-9]+.[0-9]$")) | .name ]')
         echo "::set-output name=matrix::$RELEASES"
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
@@ -27,7 +27,7 @@ jobs:
     - name: Set latest release for build
       id: set-latest-release
       run: |
-        RELEASES=$(curl -s -H "Accept: application/vnd.github.v3+json" -X GET "https://api.github.com/repos/wiremock/wiremock/tags?per_page=20" | jq --compact-output '[ .[] | select(.name|match("[0-9].[0-9]+.[0-9]$")) | .name ]')
+        RELEASES=$(curl -s -H "Accept: application/vnd.github.v3+json" -X GET "https://api.github.com/repos/wiremock/wiremock-docker/tags?per_page=20" | jq --compact-output '[ .[] | select(.name|match("[0-9].[0-9]+.[0-9]$")) | .name ]')
         RELEASE=$(echo ${RELEASES} | jq -r --slurp '.[0][0]')
         echo "::set-output name=release::$RELEASE"
     outputs:
